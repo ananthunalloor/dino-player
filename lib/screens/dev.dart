@@ -22,11 +22,7 @@ class _DevState extends State<Dev> {
 
   static final List<Widget> _widgetOptions = <Widget>[
     const HomeBody(),
-    const Center(
-      child: Text(
-        'Favorites',
-      ),
-    ),
+    const FavoritesBody(),
     const Text(
       'Search',
     ),
@@ -38,10 +34,7 @@ class _DevState extends State<Dev> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
+      body: _widgetOptions.elementAt(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
           elevation: 0,
           showSelectedLabels: false,
@@ -73,6 +66,170 @@ class _DevState extends State<Dev> {
   }
 }
 
+class FavoritesBody extends StatelessWidget {
+  const FavoritesBody({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Container(
+            padding:
+                const EdgeInsets.only(top: 40, bottom: 20, left: 10, right: 10),
+            child: Text('Your Favorites',
+                style: TextStyle(
+                  fontSize: textTheme.headline6?.fontSize,
+                  fontWeight: FontWeight.w900,
+                ))),
+        SearchBar(onPress: () {}),
+        Column(children: [
+          SongListCard(cardPress: () {}, buttonPress: () {}),
+          SongListCard(cardPress: () {}, buttonPress: () {}),
+          SongListCard(cardPress: () {}, buttonPress: () {}),
+          SongListCard(cardPress: () {}, buttonPress: () {}),
+          SongListCard(cardPress: () {}, buttonPress: () {}),
+          SongListCard(cardPress: () {}, buttonPress: () {}),
+          SongListCard(cardPress: () {}, buttonPress: () {}),
+          SongListCard(cardPress: () {}, buttonPress: () {}),
+          SongListCard(cardPress: () {}, buttonPress: () {}),
+          SongListCard(cardPress: () {}, buttonPress: () {}),
+          SongListCard(cardPress: () {}, buttonPress: () {}),
+          SongListCard(cardPress: () {}, buttonPress: () {}),
+          SongListCard(cardPress: () {}, buttonPress: () {}),
+          SongListCard(cardPress: () {}, buttonPress: () {}),
+        ])
+      ]),
+    );
+  }
+}
+
+class SearchBar extends StatelessWidget {
+  const SearchBar({
+    Key? key,
+    this.placeholder = 'Search',
+    required this.onPress,
+  }) : super(key: key);
+
+  final String placeholder;
+  final Function onPress;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Expanded(
+          child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              decoration: BoxDecoration(
+                  color: dTextColor,
+                  borderRadius: const BorderRadius.all(Radius.circular(20))),
+              child: TextField(
+                style: TextStyle(
+                  color: dBackgroundColor,
+                  fontSize: textTheme.headline6?.fontSize,
+                ),
+                decoration: InputDecoration(
+                    hintText: placeholder,
+                    hintStyle: TextStyle(
+                      fontSize: textTheme.headline6?.fontSize,
+                      fontWeight: FontWeight.w900,
+                    )),
+              )),
+        ),
+        IconButton(
+          onPressed: () => onPress,
+          icon: const FaIcon(FontAwesomeIcons.magnifyingGlass),
+          color: dTextColor,
+        )
+      ],
+    );
+  }
+}
+
+class SongListCard extends StatelessWidget {
+  const SongListCard({
+    Key? key,
+    this.title = 'Cool Song',
+    this.artist = 'Cool Artist',
+    this.duration = '3.54',
+    required this.cardPress,
+    required this.buttonPress,
+  }) : super(key: key);
+
+  final String title;
+  final String artist;
+  final String duration;
+
+  final Function cardPress;
+  final Function buttonPress;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => cardPress,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+        height: 60,
+        decoration: BoxDecoration(
+            color: dPrimaryColor.withOpacity(.04),
+            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+            boxShadow: const [
+              BoxShadow(
+                color: Color.fromARGB(10, 0, 0, 0),
+                offset: Offset(0, 2),
+                blurRadius: 5,
+                spreadRadius: 1,
+              ),
+            ]),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(5.0)),
+              child: Image.asset(
+                'assets/images/album_cover.jpg',
+              ),
+            ),
+            Expanded(
+                child: Container(
+              padding: const EdgeInsets.only(top: 10, left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: textTheme.headline6?.fontSize,
+                        fontWeight: FontWeight.w900,
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10, top: 5),
+                    child: Text(artist,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: textTheme.subtitle1?.fontSize,
+                          fontWeight: FontWeight.w400,
+                        )),
+                  ),
+                ],
+              ),
+            )),
+            Text(duration),
+            IconButton(
+              onPressed: () => buttonPress,
+              icon: const FaIcon(FontAwesomeIcons.ellipsisVertical),
+              color: dTextColor,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class HomeBody extends StatelessWidget {
   const HomeBody({
     Key? key,
@@ -80,91 +237,94 @@ class HomeBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TopHeader(
-          title: 'Hi Cozmik',
-          onPress: () {},
-        ),
-        TitleWithSeeAll(title: 'Recommended', press: () {}),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              MusicCard(
-                title: 'Come Together long',
-                artist: 'The Beatles',
-                cardPress: () {},
-                buttonPress: () {},
-              ),
-              MusicCard(
-                title: 'Come Together longer',
-                artist: 'The Beatles',
-                cardPress: () {},
-                buttonPress: () {},
-              ),
-              MusicCard(
-                title: 'Come Together the longest',
-                artist: 'The Beatles',
-                cardPress: () {},
-                buttonPress: () {},
-              ),
-            ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(
+        children: [
+          TopHeader(
+            title: 'Hi Cozmik',
+            onPress: () {},
           ),
-        ),
-        TitleWithSeeAll(title: 'Most Liked', press: () {}),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              MusicCard(
-                title: 'Come Together',
-                artist: 'The Beatles',
-                cardPress: () {},
-                buttonPress: () {},
-              ),
-              MusicCard(
-                title: 'Come Together',
-                artist: 'The Beatles',
-                cardPress: () {},
-                buttonPress: () {},
-              ),
-              MusicCard(
-                title: 'Come Together',
-                artist: 'The Beatles',
-                cardPress: () {},
-                buttonPress: () {},
-              ),
-            ],
+          TitleWithSeeAll(title: 'Recommended', press: () {}),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                MusicCard(
+                  title: 'Come Together long',
+                  artist: 'The Beatles',
+                  cardPress: () {},
+                  buttonPress: () {},
+                ),
+                MusicCard(
+                  title: 'Come Together longer',
+                  artist: 'The Beatles',
+                  cardPress: () {},
+                  buttonPress: () {},
+                ),
+                MusicCard(
+                  title: 'Come Together the longest',
+                  artist: 'The Beatles',
+                  cardPress: () {},
+                  buttonPress: () {},
+                ),
+              ],
+            ),
           ),
-        ),
-        TitleWithSeeAll(title: 'Recently Played', press: () {}),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              MusicCard(
-                title: 'Come Together',
-                artist: 'The Beatles',
-                cardPress: () {},
-                buttonPress: () {},
-              ),
-              MusicCard(
-                title: 'Come Together',
-                artist: 'The Beatles',
-                cardPress: () {},
-                buttonPress: () {},
-              ),
-              MusicCard(
-                title: 'Come Together',
-                artist: 'The Beatles',
-                cardPress: () {},
-                buttonPress: () {},
-              ),
-            ],
+          TitleWithSeeAll(title: 'Most Liked', press: () {}),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                MusicCard(
+                  title: 'Come Together',
+                  artist: 'The Beatles',
+                  cardPress: () {},
+                  buttonPress: () {},
+                ),
+                MusicCard(
+                  title: 'Come Together',
+                  artist: 'The Beatles',
+                  cardPress: () {},
+                  buttonPress: () {},
+                ),
+                MusicCard(
+                  title: 'Come Together',
+                  artist: 'The Beatles',
+                  cardPress: () {},
+                  buttonPress: () {},
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+          TitleWithSeeAll(title: 'Recently Played', press: () {}),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                MusicCard(
+                  title: 'Come Together',
+                  artist: 'The Beatles',
+                  cardPress: () {},
+                  buttonPress: () {},
+                ),
+                MusicCard(
+                  title: 'Come Together',
+                  artist: 'The Beatles',
+                  cardPress: () {},
+                  buttonPress: () {},
+                ),
+                MusicCard(
+                  title: 'Come Together',
+                  artist: 'The Beatles',
+                  cardPress: () {},
+                  buttonPress: () {},
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
