@@ -128,12 +128,15 @@ class SearchBar extends StatelessWidget {
                   color: dTextColor,
                   borderRadius: const BorderRadius.all(Radius.circular(20))),
               child: TextField(
+                onChanged: (value) {},
                 style: TextStyle(
                   color: dBackgroundColor,
                   fontSize: textTheme.headline6?.fontSize,
                 ),
                 decoration: InputDecoration(
                     hintText: placeholder,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
                     hintStyle: TextStyle(
                       fontSize: textTheme.headline6?.fontSize,
                       fontWeight: FontWeight.w900,
